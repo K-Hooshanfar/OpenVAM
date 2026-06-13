@@ -3,7 +3,7 @@
 <img src="assets/header.png" alt="OpenVAM header" width="100%">
 
 [![Paper](https://img.shields.io/badge/Paper-PDF-b31b1b.svg)](assets/arch2.pdf)
-[![HuggingFace](https://img.shields.io/badge/huggingface-%23FFD21E.svg?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co/datasets/K-Hooshanfar/OpenVAM)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=black)](https://huggingface.co/datasets/K-Hooshanfar/OpenVAM)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0-ee4c2c.svg)](https://pytorch.org/)
