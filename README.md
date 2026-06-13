@@ -2,10 +2,6 @@
 
 <img src="assets/header.png" alt="OpenVAM header" width="100%">
 
-# OpenVAM
-
-**Open-World Visual Attention Modeling with VLMs**
-
 [![Paper](https://img.shields.io/badge/Paper-PDF-b31b1b.svg)](assets/arch2.pdf)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
