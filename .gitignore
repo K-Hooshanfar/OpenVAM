@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Checkpoints & model weights
+checkpoints*/
+*.pth
+*.pt
+*.bin
+*.safetensors
+
+# Training artefacts
+logs/
+runs/
+wandb/
+*.tfevents.*
+
+# Raw experiment logs & result dumps
+*.log
+# (keep *.txt config docs but ignore large dump files)
+
+# Dataset images / heavy data – keep only the JSONL manifests
+datasets/images/
+datasets/stimuli/
+datasets/saliency_maps/
+datasets/fixation_maps/
+dataset_merged/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

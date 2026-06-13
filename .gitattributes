@@ -1,0 +1,15 @@
+# Normalize line endings to LF on check-in (cross-platform consistency)
+* text=auto eol=lf
+
+# Shell scripts must always use LF
+*.sh text eol=lf
+
+# Binary files — no conversion
+*.pth binary
+*.pt  binary
+*.bin binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
