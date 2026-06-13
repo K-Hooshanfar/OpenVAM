@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/header.png" alt="OpenVAM header" width="100%">
+
 # OpenVAM
 
 **Open-World Visual Attention Modeling with VLMs**
@@ -18,6 +20,12 @@
   <br>
   <em>Overview of the <b>OpenVAM</b> architecture: a DINOv3 visual encoder feeds a coarse-to-fine saliency decoder (where) and, through a visual adapter, an instruction-following VLM that produces grounded what/why explanations.</em>
 </div>
+
+---
+
+## 💥 News 💥
+
+- **[2026-06]** Initial release of the OpenVAM codebase
 
 ---
 
@@ -80,7 +88,7 @@ export HF_TOKEN=hf_your_token_here          # Linux / macOS
 # setx HF_TOKEN "hf_your_token_here"         # Windows (PowerShell, new shell needed)
 ```
 
-The scripts read the token from `HF_TOKEN` (or `HUGGING_FACE_HUB_TOKEN`); inference scripts also accept a `--hf_token` flag. **Never commit your token to the repository.**
+The scripts read the token from `HF_TOKEN` (or `HUGGING_FACE_HUB_TOKEN`); inference scripts also accept a `--hf_token` flag.
 
 ---
 
@@ -147,15 +155,8 @@ OpenVAM uses a composite saliency loss combining distributional and structural t
 
 $$\mathcal{L}_{\text{sal}} = \lambda_1 \mathcal{L}_{\text{KL}} + \lambda_2 \mathcal{L}_{\text{CC}} + \lambda_3 \mathcal{L}_{\text{SIM}} + \lambda_4 \mathcal{L}_{\text{NSS}} + \lambda_5 \mathcal{L}_{\text{MSE}}$$
 
-- **Stage I / II:**
-
-  $$\mathcal{L} = \mathcal{L}_{\text{sal}}$$
-
-- **Stage III:**
-
-  $$\mathcal{L} = \alpha\,\mathcal{L}_{\text{sal}} + \beta\,\mathcal{L}_{\text{text}}$$
-
-  *(no gradients flow into the frozen saliency branch)*
+- **Stage I / II:** $\mathcal{L} = \mathcal{L}_{\text{sal}}$
+- **Stage III:** $\mathcal{L} = \alpha \mathcal{L}_{\text{sal}} + \beta \mathcal{L}_{\text{text}}$ *(no gradients flow into the frozen saliency branch)*
 
 All saliency terms are implemented in [`utils/losses.py`](utils/losses.py).
 
@@ -167,8 +168,7 @@ All saliency terms are implemented in [`utils/losses.py`](utils/losses.py).
 ```bash
 python scripts/inference.py \
     --checkpoint checkpoints/stage3/best_model.pth \
-    --image path/to/image.jpg \
-    --text "Person in the foreground"   # optional text conditioning
+    --image path/to/image.jpg
 ```
 
 **Batch explanation generation on a manifest:**
@@ -263,8 +263,6 @@ Following the paper, the grounded *what/why* annotations were generated with a d
 ├── ARCHITECTURE.md                       # Detailed architecture documentation
 └── README.md
 ```
-
-All scripts are run from the repository root (e.g. `python scripts/train_stage3_lora.py ...`); each entrypoint puts the repo root on `sys.path` automatically.
 
 ---
 
