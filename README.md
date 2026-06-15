@@ -57,7 +57,7 @@ Ensure you have **Python ≥ 3.10** installed.
 
 **Option A — Conda (recommended, Linux/WSL):**
 ```bash
-conda env create -f dino.yml
+conda env create -f openvam.yml
 conda activate dino
 ```
 
