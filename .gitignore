@@ -50,3 +50,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+*.csv
+*.jsonl

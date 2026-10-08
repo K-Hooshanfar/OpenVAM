@@ -173,7 +173,7 @@ python scripts/inference.py \
     --image path/to/image.jpg
 ```
 
-**Batch explanation generation on a manifest:**
+**Batch explanation generation on a val JSONL:**
 ```bash
 python scripts/inference_batch.py \
     --checkpoint checkpoints/stage3/best_model.pth \
@@ -201,7 +201,26 @@ python scripts/eval_per_dataset.py \
 
 ## Datasets
 
-The JSONL manifests in `datasets/` provide image paths, grounded saliency explanations, and metadata across multiple domains:
+### 1. Download stimuli, saliency maps, and fixations
+
+Download the packed multi-domain saliency datasets from Google Drive and extract them so each dataset folder is reachable by the paths in the JSONL files:
+
+- **[saliency_datasets.zip](https://drive.google.com/file/d/1Mdk97UB0phYDZv8zgjBayeC1I1_QcUmh/view?usp=drive_link)**
+
+### 2. Download train/val JSONL files
+
+The train and val JSONL annotation files are published on Hugging Face: [K-Hooshanfar/OpenVAM](https://huggingface.co/datasets/K-Hooshanfar/OpenVAM). Download them into `datasets/` before merging:
+
+```bash
+huggingface-cli download K-Hooshanfar/OpenVAM \
+    --repo-type dataset \
+    --include "*.jsonl" \
+    --local-dir datasets
+```
+
+If the dataset page asks you to accept access terms, log in with the same `HF_TOKEN` from the installation section, then rerun the command.
+
+Each file provides an image path and a grounded saliency explanation across multiple domains:
 
 | Dataset | Domain |
 |---------|--------|
@@ -212,7 +231,27 @@ The JSONL manifests in `datasets/` provide image paths, grounded saliency explan
 | SalEC   | commercial imagery |
 | UI-256  | web / UI layouts |
 
-`datasets/merge_datasets_unified.py` merges them into a unified `train`/`val` layout with dataset-prefixed IDs (e.g. `CAT2000_256_Action_001`). Each entry follows the format:
+### 3. Merge before training (required)
+
+**Do not train on the raw per-dataset folders directly.** After downloading the Drive archive and the JSONL files, merge them into a unified `train`/`val` layout with [`datasets/merge_datasets_unified.py`](datasets/merge_datasets_unified.py). The script copies (or moves) stimuli, saliency maps, and fixations, rewrites paths, and writes `merged_train.jsonl` / `merged_val.jsonl` with dataset-prefixed IDs (e.g. `CAT2000_256_Action_001`):
+
+```bash
+# Run on the machine where the extracted image files live
+python datasets/merge_datasets_unified.py \
+    --datasets_dir datasets \
+    --out_dir /path/to/merged
+```
+
+Then point training / evaluation at the merged outputs:
+
+```bash
+--train_jsonl /path/to/merged/merged_train.jsonl \
+--val_jsonl   /path/to/merged/merged_val.jsonl \
+--saliency_dir /path/to/merged \
+--fixation_dir /path/to/merged
+```
+
+Each JSONL entry follows the format:
 
 ```json
 {
@@ -250,13 +289,13 @@ Following the paper, the grounded *what/why* annotations were generated with a d
 │   ├── eval_per_dataset.py               #   Per-dataset KLD/CC/SIM/NSS/AUC evaluation
 │   ├── validation.py                     #   Directory-based evaluation against GT maps
 │   ├── inference.py                      #   Single-image saliency + explanation
-│   ├── inference_batch.py                #   Batch explanation generation on a val manifest
+│   ├── inference_batch.py                #   Batch explanation generation on a val JSONL
 │   ├── stage1_explain.py                 #   Stage-I saliency → Qwen explanation pipeline
 │   └── sample_folder_explain.py          #   Standalone Qwen explanation over a folder
 │
-├── datasets/                             # JSONL dataset manifests (no images)
+├── datasets/                             # JSONL annotation files (no images)
 │   ├── merge_datasets_unified.py         #   Merge per-dataset splits into a unified layout
-│   └── *.jsonl                           #   Per-dataset train/val manifests
+│   └── *.jsonl                           #   Per-dataset train/val JSONL files
 ├── DPT/                                  # DPT decoder building blocks (local package)
 ├── assets/                               # Figures for docs (arch2 + stages_training2, PDF/PNG)
 │
@@ -273,11 +312,11 @@ Following the paper, the grounded *what/why* annotations were generated with a d
 If you use this code in your research, please cite our paper:
 
 ```bibtex
-@inproceedings{openvam,
-  title     = {OpenVAM: Open-World Visual Attention Modeling with VLMs},
-  author    = {Anonymous},
-  booktitle = {Proceedings},
-  year      = {2026}
+@article{hooshanfar2026openvam,
+  title={OpenVAM: Open-World Visual Attention Modeling with VLMs},
+  author={Hooshanfar, Kiana and Kazerouni, Amirhossein and Hosseini, Alireza and Brudno, Michael and Taati, Babak},
+  journal={arXiv preprint arXiv:2609.31364},
+  year={2026}
 }
 ```
 
