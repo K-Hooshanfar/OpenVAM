@@ -309,8 +309,6 @@ Following the paper, the grounded *what/why* annotations were generated with a d
 
 ## Citation
 
-If you use this code in your research, please cite our paper:
-
 ```bibtex
 @article{hooshanfar2026openvam,
   title={OpenVAM: Open-World Visual Attention Modeling with VLMs},
